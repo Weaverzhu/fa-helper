@@ -2,6 +2,7 @@
 /.vscode
 *.dot
 *.png
+in.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

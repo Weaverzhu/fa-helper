@@ -91,7 +91,6 @@ class FiniteAutomata:
 
     def closure(self, l: list, label: str):
         l = self.eps_closure(l)
-        # q = queue.Queue()
         S = set()
         res = []
         for u in l:

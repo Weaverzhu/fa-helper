@@ -12,7 +12,6 @@ class NFA(fa.FiniteAutomata):
 
         mp = dict()
         f = frozenset(self.init_state)
-        
         q.put(f)
 
         cnt = 0
@@ -23,13 +22,18 @@ class NFA(fa.FiniteAutomata):
         
         while not q.empty():
             u = q.get()
+            # print(u)
             for w in self.sigma:
                 v = self.closure(u, w)
+                if len(v) == 0:
+                    continue
                 v = frozenset(v)
+                print(u, v)
                 if not v in mp:
                     mp[v] = cnt
                     d.add_node(cnt)
                     cnt += 1
+                    q.put(v)
                 d.add_edge(mp[u], mp[v], w)
 
         return d
