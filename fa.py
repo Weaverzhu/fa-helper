@@ -3,6 +3,7 @@
 import networkx as nx
 from matplotlib import pyplot as plt
 import queue, copy
+from networkx.drawing.nx_agraph import to_agraph
 
 class Node:
     def __init__(self, label: str, mp: dict(), rmp: dict()):
@@ -19,10 +20,11 @@ class Node:
 
 class FiniteAutomata:
             
-    def __init__(self):
-        self.G = nx.DiGraph()
+    def __init__(self, simga: frozenset):
+        self.G = nx.MultiDiGraph()
         self.init_state = []
         self.final_state = []
+        self.sigma = simga
 
     def add_node(self, label: str):
         self.G.add_node(label)
@@ -48,7 +50,13 @@ class FiniteAutomata:
         self.G.add_edge(u, v, weight=label)
 
     def draw(self):
+        # self.G.graph['edge']['splines'] = 'curved'
+        self.G.graph['edge'] = {'arrowsize': '0.6', 'splines': 'curved'}
+
+    
         
+
+
         pos = nx.planar_layout(self.G)
         nx.draw(self.G, pos, with_labels=True)
         edge_labels = dict([((u, v,), d['weight'])
