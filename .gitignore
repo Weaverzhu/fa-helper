@@ -1,5 +1,7 @@
 *play*
 /.vscode
+*.dot
+*.png
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

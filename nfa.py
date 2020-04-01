@@ -45,11 +45,9 @@ if __name__ == '__main__':
     n.add_edge('C', 'E')
     n.set_init_state('A')
     n.add_edge('B', 'B', '0')
-    n.draw()
-    exit()
 
     print(n.eps_closure(['A']))
     print(n.eps_closure(['C']))
 
     d = n.toDFA()
-    d.draw()
+    d.draw_graphviz()
