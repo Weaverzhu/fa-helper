@@ -1,7 +1,7 @@
 *play*
-/.vscode
+/.vscodea
 *.dot
-*.png
+/a.png
 in.txt
 
 # Byte-compiled / optimized / DLL files
