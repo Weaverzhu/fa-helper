@@ -3,9 +3,11 @@
 import networkx as nx
 from matplotlib import pyplot as plt
 import queue
+import graphviz
 import copy
 import os
 
+EPS = 'ε'
 
 class Node:
     def __init__(self, label: str, mp: dict(), rmp: dict()):
@@ -49,16 +51,31 @@ class FiniteAutomata:
     def add_nodes_from(self, labels: list):
         self.G.add_nodes_from(labels)
 
-    def add_edge(self, u: str, v: str, label='empty'):
+    def add_edge(self, u: str, v: str, label=EPS):
         self.G.add_edge(u, v, key=label, label=label)
 
     def draw(self):
-        pos = nx.planar_layout(self.G)
-        nx.draw(self.G, pos, with_labels=True)
-        edge_labels = dict([((u, v,), d['label'])
-                            for u, v, d in self.G.edges(data=True)])
-        nx.draw_networkx_edge_labels(self.G, pos, edge_labels=edge_labels)
-        plt.show()
+        f = graphviz.Digraph('finite state machine', filename='a.dot')
+        f.attr(rankdir='LR', size='8,5')
+
+        f.attr('node', shape='plaintext')
+        f.node('start')
+
+        f.attr('node', shape='doublecircle')
+        for label in self.init_state:
+            f.edge('start', str(label))
+            f.node(str(label))
+        for label in self.final_state:
+            f.node(str(label))
+        
+        f.attr('node', shape='circle')
+        for e in self.G.edges:
+            print(e[0], e[1], e[2])
+            u = str(e[0])
+            v = str(e[1])
+            f.edge(u, v, label=e[2])
+        
+        f.view()
 
 
     def draw_graphviz(self, png_path='./a.png', dot_file_path='./a.dot'):
@@ -68,6 +85,7 @@ class FiniteAutomata:
         os.system("dot -Tpng {} > {}".format(dot_file_path, png_path))
         plt.imshow(plt.imread(png_path))
         plt.show()
+
 
     def eps_closure(self, l: list):
         q = queue.Queue()
@@ -82,7 +100,7 @@ class FiniteAutomata:
             for v in self.G[u]:
                 if v in S:
                     continue
-                if not 'empty' in self.G[u][v]:
+                if not EPS in self.G[u][v]:
                     continue
                 q.put(v)
                 S.add(v)

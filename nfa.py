@@ -32,6 +32,10 @@ class NFA(fa.FiniteAutomata):
                 if not v in mp:
                     mp[v] = cnt
                     d.add_node(cnt)
+                    for flabel in self.final_state:
+                        if flabel in v:
+                            d.final_state.append(cnt)
+                            break
                     cnt += 1
                     q.put(v)
                 d.add_edge(mp[u], mp[v], w)
